@@ -5,10 +5,13 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+from status_display import display_menu
+
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    
     clock = pygame.time.Clock()
     
     updatable = pygame.sprite.Group()
@@ -23,9 +26,6 @@ def main():
 
     Player.containers = (updatable, drawable)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-
-    
-    
     
     dt = 0
 
@@ -36,17 +36,21 @@ def main():
             
         for item in updatable:
             item.update(dt)
-        print(dt)
+            pygame.display.update()
           
-        
         for asteroid in asteroids:
             if asteroid.collides_with(player):
-                print("Game over!")
-                sys.exit()
+                if player.player_lives == 0:
+                    print("Game over!")
+                    sys.exit()
+                else: 
+                    player.player_lives -= 1
+                    player.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+                    asteroid_field.reset(asteroid, asteroids)
+                    
             for shot in shots:
                 if shot.collides_with(asteroid):
                     asteroid.split()
-                
 
         screen.fill("black")
 

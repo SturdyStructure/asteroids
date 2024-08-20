@@ -4,7 +4,6 @@ from constants import *
 from shot import Shot
 
 
-
 class Player(CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
@@ -12,6 +11,8 @@ class Player(CircleShape):
         self.rotation =  0
         self.rotation = 0
         self.shoot_timer = 0
+        self.player_lives = 3
+        
         
 
     def triangle(self):
@@ -47,7 +48,6 @@ class Player(CircleShape):
         if keys[pygame.K_SPACE]:
             self.shoot()
 
-        
 
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
